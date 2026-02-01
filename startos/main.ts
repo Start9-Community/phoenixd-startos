@@ -1,5 +1,6 @@
 import { sdk } from './sdk'
 import { port } from './utils'
+import { i18n } from './i18n'
 
 export const main = sdk.setupMain(async ({ effects }) => {
   /**
@@ -7,7 +8,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
    *
    * In this section, we fetch any resources or run any desired preliminary commands.
    */
-  console.info('Starting phoenixd!')
+  console.info(i18n('Starting phoenixd!'))
 
   const mountpoint = '/phoenix/.phoenix'
 
@@ -45,11 +46,11 @@ export const main = sdk.setupMain(async ({ effects }) => {
         command: sdk.useEntrypoint(),
       },
       ready: {
-        display: 'primary daemon',
+        display: i18n('primary daemon'),
         fn: () =>
           sdk.healthCheck.checkPortListening(effects, port, {
-            successMessage: 'The server is ready',
-            errorMessage: 'The server is not ready',
+            successMessage: i18n('The server is ready'),
+            errorMessage: i18n('The server is not ready'),
           }),
       },
       requires: ['chown'],

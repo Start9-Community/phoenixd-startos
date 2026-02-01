@@ -1,4 +1,5 @@
 import { setupManifest } from '@start9labs/start-sdk'
+import i18n from './i18n'
 
 export const manifest = setupManifest({
   id: 'phoenixd',
@@ -11,14 +12,12 @@ export const manifest = setupManifest({
   donationUrl: null,
   docsUrl:
     'https://github.com/Start9Labs/phoenixd-startos/blob/master/instructions.md',
-  description: {
-    short: 'Lightning backend for Phoenix Wallet',
-    long: 'phoenixd is a minimal, specialized Lightning node designed for sending and receiving Lightning payments. phoenixd makes it very easy to develop any application that needs to interact with Lightning, by abstracting away all the complexity, without compromising on self-custody',
-  },
+  description: i18n.description,
   volumes: ['main'],
   images: {
     phoenixd: {
       source: { dockerTag: 'acinq/phoenixd:0.7.1' },
+      arch: ['x86_64', 'aarch64'],
     },
   },
   dependencies: {},

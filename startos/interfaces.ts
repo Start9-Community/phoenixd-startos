@@ -1,5 +1,6 @@
 import { sdk } from './sdk'
 import { port } from './utils'
+import { i18n } from './i18n'
 
 export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
   const apiMulti = sdk.MultiHost.of(effects, 'api-multi')
@@ -7,9 +8,9 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
     protocol: 'http',
   })
   const api = sdk.createInterface(effects, {
-    name: 'Server API',
+    name: i18n('Server API'),
     id: 'api',
-    description: 'Your phoenixd server API',
+    description: i18n('Your phoenixd server API'),
     type: 'api',
     masked: false,
     schemeOverride: null,
