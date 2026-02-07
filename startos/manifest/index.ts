@@ -10,8 +10,7 @@ export const manifest = setupManifest({
   supportSite: 'https://github.com/ACINQ/phoenixd/issues/',
   marketingSite: 'https://phoenix.acinq.co/server/',
   donationUrl: null,
-  docsUrl:
-    'https://github.com/Start9Labs/phoenixd-startos/blob/master/instructions.md',
+  docsUrl: 'https://phoenix.acinq.co/server',
   description: i18n.description,
   volumes: ['main'],
   images: {
