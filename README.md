@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icon.png" alt="Project Logo" width="21%">
+  <img src="icon.svg" alt="Project Logo" width="21%">
 </p>
 
 # phoenixd for StartOS
@@ -18,7 +18,7 @@ This package runs **1 container**:
 
 | Container | Image | Purpose |
 |-----------|-------|---------|
-| phoenixd | `acinq/phoenixd:0.7.1` | Lightning wallet server |
+| phoenixd | `acinq/phoenixd:0.7.2` | Lightning wallet server |
 
 ## Volumes
 
@@ -96,10 +96,10 @@ All data is backed up:
 
 ```yaml
 package_id: phoenixd
-upstream_version: 0.7.1
+upstream_version: 0.7.2
 containers:
   - name: phoenixd
-    image: acinq/phoenixd:0.7.1
+    image: acinq/phoenixd:0.7.2
 
 volumes:
   main:
