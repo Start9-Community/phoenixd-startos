@@ -1,4 +1,4 @@
-FROM acinq/phoenixd:0.6.3
+FROM acinq/phoenixd:0.7.2
 
 USER root
 

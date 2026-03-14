@@ -1,9 +1,11 @@
 id: phoenixd
 title: "phoenixd"
-version: 0.6.3
+version: 0.7.2
 release-notes: |
-  - Add basic configuration
-  - Add properties
+  - Upstream update: phoenixd 0.6.3 -> 0.7.2
+  - Taproot channel support (v0.7.0)
+  - Updated lightning-kmp to 1.11.4
+  - Optimized binaries
 license: Apache-2.0
 wrapper-repo: "https://github.com/Start9Labs/phoenixd-startos"
 upstream-repo: "https://github.com/ACINQ/phoenixd"
