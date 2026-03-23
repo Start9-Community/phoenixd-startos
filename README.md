@@ -18,7 +18,7 @@ This package runs **1 container**:
 
 | Container | Image | Purpose |
 |-----------|-------|---------|
-| phoenixd | `acinq/phoenixd:0.7.2` | Lightning wallet server |
+| phoenixd | `acinq/phoenixd` | Lightning wallet server |
 
 ## Volumes
 
@@ -72,7 +72,7 @@ All data is backed up:
 
 | Check | Method | Success Condition |
 |-------|--------|-------------------|
-| Primary daemon | Port listening | Port 9740 responds |
+| Primary daemon | Port listening | "The server is ready" / "The server is not ready" |
 
 ## Limitations
 
@@ -96,10 +96,9 @@ All data is backed up:
 
 ```yaml
 package_id: phoenixd
-upstream_version: 0.7.2
 containers:
   - name: phoenixd
-    image: acinq/phoenixd:0.7.2
+    image: acinq/phoenixd
 
 volumes:
   main:
