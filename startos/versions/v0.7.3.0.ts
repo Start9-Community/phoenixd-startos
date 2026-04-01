@@ -1,7 +1,7 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
-export const v_0_7_3_0_b4 = VersionInfo.of({
-  version: '0.7.3:0-beta.4',
+export const v_0_7_3_0 = VersionInfo.of({
+  version: '0.7.3:0',
   releaseNotes: {
     en_US: 'Update to upstream phoenixd 0.7.3',
     es_ES: 'Actualización a phoenixd upstream 0.7.3',
