@@ -1,87 +1,134 @@
 <p align="center">
-  <img src="icon.svg" alt="Project Logo" width="21%">
+  <img src="icon.svg" alt="phoenixd Logo" width="21%">
 </p>
 
-# phoenixd for StartOS
+# phoenixd on StartOS
 
-This repository packages [phoenixd](https://github.com/ACINQ/phoenixd) for StartOS. This document describes what makes this package different from a default phoenixd deployment.
+> **Upstream docs:** <https://phoenix.acinq.co/server>
+>
+> Everything not listed in this document should behave the same as upstream
+> phoenixd. If a feature, setting, or behavior is not mentioned
+> here, the upstream documentation is accurate and fully applicable.
 
-For general phoenixd usage and features, see the [upstream documentation](https://phoenix.acinq.co/server).
+[phoenixd](https://github.com/ACINQ/phoenixd) is a minimal Lightning wallet server that connects to ACINQ's Lightning Service Provider (LSP) for channel management and liquidity.
 
-## How This Differs from Upstream
+---
 
-This package runs phoenixd with minimal configuration. The server connects to ACINQ's Lightning infrastructure (LSP) for channel management and liquidity. All configuration and wallet interaction is done through the HTTP API.
+## Table of Contents
 
-## Container Runtime
+- [Image and Container Runtime](#image-and-container-runtime)
+- [Volume and Data Layout](#volume-and-data-layout)
+- [Installation and First-Run Flow](#installation-and-first-run-flow)
+- [Configuration Management](#configuration-management)
+- [Network Access and Interfaces](#network-access-and-interfaces)
+- [Actions (StartOS UI)](#actions-startos-ui)
+- [Backups and Restore](#backups-and-restore)
+- [Health Checks](#health-checks)
+- [Dependencies](#dependencies)
+- [Limitations and Differences](#limitations-and-differences)
+- [What Is Unchanged from Upstream](#what-is-unchanged-from-upstream)
+- [Contributing](#contributing)
+- [Quick Reference for AI Consumers](#quick-reference-for-ai-consumers)
 
-This package runs **1 container**:
+---
 
-| Container | Image | Purpose |
-|-----------|-------|---------|
-| phoenixd | `acinq/phoenixd` | Lightning wallet server |
+## Image and Container Runtime
 
-## Volumes
+| Property | Value |
+|----------|-------|
+| Image | `acinq/phoenixd` (upstream unmodified) |
+| Architectures | x86_64, aarch64 |
+| Entrypoint | Default upstream entrypoint |
 
-| Volume | Contents | Backed Up |
-|--------|----------|-----------|
-| `main` | Wallet data, seed, channels, database | Yes |
+**Startup order:** A `chown` one-shot sets ownership of the data directory to `phoenix:phoenix`, then the daemon starts.
 
-Mounted at `/phoenix/.phoenix` inside the container.
+---
+
+## Volume and Data Layout
+
+| Volume | Mount Point | Purpose |
+|--------|-------------|---------|
+| `main` | `/phoenix/.phoenix` | Wallet data, seed, channels, database |
 
 **Important:** The `main` volume contains your Lightning wallet seed and funds. Ensure backups are secure.
 
+---
+
+## Installation and First-Run Flow
+
+| Step | Upstream | StartOS |
+|------|----------|---------|
+| Installation | Download binary or Docker image | Install from marketplace or sideload `.s9pk` |
+| First start | Run `phoenixd` manually | Automatic via StartOS |
+| API password | Generated in `phoenix.conf` | Same — generated on first run, found in `phoenix.conf` |
+
+No setup wizard or admin account creation is needed. The server is ready to use after first start.
+
+---
+
 ## Configuration Management
 
-### Auto-Configured Settings
+phoenixd runs with default settings connecting to ACINQ's LSP. No user-configurable settings are exposed through StartOS actions.
 
-None. phoenixd runs with default settings connecting to ACINQ's LSP.
+Configuration is done via the HTTP API or by editing config files directly in the data directory.
 
-### User-Configurable Settings
+---
 
-Configuration is done via the HTTP API or by editing config files directly in the data directory. No StartOS actions are provided for configuration.
+## Network Access and Interfaces
 
-## Network Interfaces
-
-| Interface | Type | Port | Description |
-|-----------|------|------|-------------|
-| Server API | api | 9740 | HTTP API for wallet operations |
+| Interface | Port | Protocol | Type | Description |
+|-----------|------|----------|------|-------------|
+| Server API | 9740 | HTTP | api | HTTP API for wallet operations |
 
 The API requires authentication using the HTTP password generated on first run (found in `phoenix.conf`).
 
-## Actions
+---
+
+## Actions (StartOS UI)
 
 None. All interaction is through the HTTP API.
 
-## Dependencies
+---
 
-None. phoenixd connects directly to ACINQ's Lightning Service Provider (LSP) for:
-- Channel management
-- Liquidity provisioning
-- Routing
+## Backups and Restore
 
-No local Bitcoin node is required.
+**Included in backup:**
 
-## Backups
+- `main` volume — wallet seed, channel state, transaction history
 
-All data is backed up:
-- `main` volume - wallet seed, channel state, transaction history
+**Restore behavior:**
+
+- All data is restored, including wallet seed and channel state
+- No reconfiguration needed
 
 **Critical:** Your Lightning funds depend on this backup. The seed phrase allows recovery, but channel state is also important for fund safety.
 
+---
+
 ## Health Checks
 
-| Check | Method | Success Condition |
-|-------|--------|-------------------|
-| Primary daemon | Port listening | "The server is ready" / "The server is not ready" |
+| Check | Display | Method | Messages |
+|-------|---------|--------|----------|
+| Primary daemon | "primary daemon" | Port listening (9740) | "The server is ready" / "The server is not ready" |
 
-## Limitations
+---
 
-1. **ACINQ dependency**: Requires connection to ACINQ's LSP; cannot use arbitrary Lightning peers
-2. **No local Bitcoin node**: Relies on ACINQ infrastructure for blockchain data
-3. **No web UI**: API-only interface; requires external tools or custom integration
-4. **Liquidity fees**: ACINQ charges fees for channel liquidity and on-chain operations
+## Dependencies
 
-## What's Unchanged
+None. phoenixd connects directly to ACINQ's Lightning Service Provider (LSP) for channel management, liquidity provisioning, and routing. No local Bitcoin node is required.
+
+---
+
+## Limitations and Differences
+
+1. **ACINQ dependency** — Requires connection to ACINQ's LSP; cannot use arbitrary Lightning peers.
+2. **No local Bitcoin node** — Relies on ACINQ infrastructure for blockchain data.
+3. **No web UI** — API-only interface; requires external tools or custom integration.
+4. **Liquidity fees** — ACINQ charges fees for channel liquidity and on-chain operations.
+
+---
+
+## What Is Unchanged from Upstream
 
 - Full phoenixd API functionality
 - Self-custody of funds (you control the seed)
@@ -92,37 +139,25 @@ All data is backed up:
 
 ---
 
-## Quick Reference (YAML)
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for build instructions and development workflow.
+
+---
+
+## Quick Reference for AI Consumers
 
 ```yaml
 package_id: phoenixd
-containers:
-  - name: phoenixd
-    image: acinq/phoenixd
-
+image: acinq/phoenixd
+architectures:
+  - x86_64
+  - aarch64
 volumes:
-  main:
-    backup: true
-    mountpoint: /phoenix/.phoenix
-    contains: wallet seed, channels, database
-
-interfaces:
-  api:
-    type: api
-    port: 9740
-    auth: HTTP password (in phoenix.conf)
-
-actions: []
-
-dependencies: []
-
-health_checks:
-  - name: Primary daemon
-    method: port_listening
-    port: 9740
-
-not_available:
-  - web_ui
-  - local_bitcoin_node
-  - custom_lsp
+  main: /phoenix/.phoenix
+ports:
+  api: 9740
+dependencies: none
+startos_managed_env_vars: []
+actions: none
 ```
