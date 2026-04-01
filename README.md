@@ -1,67 +1,128 @@
 <p align="center">
-  <img src="icon.png" alt="Project Logo" width="21%">
+  <img src="icon.svg" alt="Project Logo" width="21%">
 </p>
 
 # phoenixd for StartOS
 
-[phoenixd](https://github.com/ACINQ/phoenixd/) is a minimal, specialized Lightning node designed for sending and receiving Lightning payments. **phoenixd** makes it very easy to develop any application that needs to interact with Lightning, by abstracting away all the complexity, without compromising on self-custody. This repository creates the `s9pk` package that is installed to run `phoenixd` on [StartOS](https://github.com/Start9Labs/start-os/). 
+This repository packages [phoenixd](https://github.com/ACINQ/phoenixd) for StartOS. This document describes what makes this package different from a default phoenixd deployment.
+
+For general phoenixd usage and features, see the [upstream documentation](https://phoenix.acinq.co/server).
+
+## How This Differs from Upstream
+
+This package runs phoenixd with minimal configuration. The server connects to ACINQ's Lightning infrastructure (LSP) for channel management and liquidity. All configuration and wallet interaction is done through the HTTP API.
+
+## Container Runtime
+
+This package runs **1 container**:
+
+| Container | Image | Purpose |
+|-----------|-------|---------|
+| phoenixd | `acinq/phoenixd` | Lightning wallet server |
+
+## Volumes
+
+| Volume | Contents | Backed Up |
+|--------|----------|-----------|
+| `main` | Wallet data, seed, channels, database | Yes |
+
+Mounted at `/phoenix/.phoenix` inside the container.
+
+**Important:** The `main` volume contains your Lightning wallet seed and funds. Ensure backups are secure.
+
+## Configuration Management
+
+### Auto-Configured Settings
+
+None. phoenixd runs with default settings connecting to ACINQ's LSP.
+
+### User-Configurable Settings
+
+Configuration is done via the HTTP API or by editing config files directly in the data directory. No StartOS actions are provided for configuration.
+
+## Network Interfaces
+
+| Interface | Type | Port | Description |
+|-----------|------|------|-------------|
+| Server API | api | 9740 | HTTP API for wallet operations |
+
+The API requires authentication using the HTTP password generated on first run (found in `phoenix.conf`).
+
+## Actions
+
+None. All interaction is through the HTTP API.
 
 ## Dependencies
 
-Prior to building the `phoenixd` package, it's essential to configure your build environment for StartOS services. You can find instructions on how to set up the appropriate build environment in the [Developer Docs](https://docs.start9.com/latest/developer-docs/packaging).
+None. phoenixd connects directly to ACINQ's Lightning Service Provider (LSP) for:
+- Channel management
+- Liquidity provisioning
+- Routing
 
-- [docker](https://docs.docker.com/get-docker)
-- [docker-buildx](https://docs.docker.com/buildx/working-with-buildx/)
-- [deno](https://deno.land/)
-- [make](https://www.gnu.org/software/make/)
-- [start-sdk](https://github.com/Start9Labs/start-os/tree/sdk/core)
-- [yq](https://mikefarah.gitbook.io/yq)
+No local Bitcoin node is required.
 
-## Cloning
+## Backups
 
-Clone the phoenixd package repository locally.
+All data is backed up:
+- `main` volume - wallet seed, channel state, transaction history
 
+**Critical:** Your Lightning funds depend on this backup. The seed phrase allows recovery, but channel state is also important for fund safety.
+
+## Health Checks
+
+| Check | Method | Success Condition |
+|-------|--------|-------------------|
+| Primary daemon | Port listening | "The server is ready" / "The server is not ready" |
+
+## Limitations
+
+1. **ACINQ dependency**: Requires connection to ACINQ's LSP; cannot use arbitrary Lightning peers
+2. **No local Bitcoin node**: Relies on ACINQ infrastructure for blockchain data
+3. **No web UI**: API-only interface; requires external tools or custom integration
+4. **Liquidity fees**: ACINQ charges fees for channel liquidity and on-chain operations
+
+## What's Unchanged
+
+- Full phoenixd API functionality
+- Self-custody of funds (you control the seed)
+- Send and receive Lightning payments
+- BOLT11 and BOLT12 invoice support
+- Webhook notifications
+- Multi-account support
+
+---
+
+## Quick Reference (YAML)
+
+```yaml
+package_id: phoenixd
+containers:
+  - name: phoenixd
+    image: acinq/phoenixd
+
+volumes:
+  main:
+    backup: true
+    mountpoint: /phoenix/.phoenix
+    contains: wallet seed, channels, database
+
+interfaces:
+  api:
+    type: api
+    port: 9740
+    auth: HTTP password (in phoenix.conf)
+
+actions: []
+
+dependencies: []
+
+health_checks:
+  - name: Primary daemon
+    method: port_listening
+    port: 9740
+
+not_available:
+  - web_ui
+  - local_bitcoin_node
+  - custom_lsp
 ```
-git clone https://github.com/Start9Labs/phoenixd-startos.git
-cd phoenixd-startos
-```
-
-## Building
-
-To build the **phoenixd** service as a universal package, run the following command:
-
-```
-make
-```
-
-Alternatively the package can be built for individual architectures by specifying the architecture as follows:
-
-```
-# for amd64
-make x86
-```
-or
-```
-# for arm64
-make arm
-```
-
-## Installing (on StartOS)
-
-Before installation, define `host: https://server-name.local` in your `~/.embassy/config.yaml` config file then run the following commands to determine successful install:
-
-> :information_source: Change server-name.local to your Start9 server address
-
-```
-start-cli auth login
-#Enter your StartOS password
-make install
-```
-
-**Tip:** You can also install the `phoenixd.s9pk` by sideloading it under the **StartOS > System > Sideload a Service** section.
-
-## Verify Install
-
-Go to your StartOS Services page, select **phoenixd** and start the service.
-
-**Done!**
