@@ -1,5 +1,5 @@
 import { sdk } from '../sdk'
-import { selectedElectrumServer } from '../chainSource'
+import { selectedElectrumServer } from '../utils'
 import { phoenixConf } from '../fileModels/phoenix.conf'
 
 export const watchChainSource = sdk.setupOnInit(async (effects) => {
