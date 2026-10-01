@@ -1,6 +1,6 @@
 import { T } from '@start9labs/start-sdk'
 import { sdk } from './sdk'
-import { indexers } from './chainSource'
+import { indexers } from './utils'
 import { storeJson } from './fileModels/store.json'
 
 export const setDependencies = sdk.setupDependencies(async ({ effects }) => {
