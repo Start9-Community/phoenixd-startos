@@ -16,18 +16,7 @@ const shape = z
   })
   .catchall(z.string())
 
-type Conf = z.infer<typeof shape>
-
-export const phoenixConf = FileHelper.env<Conf, Conf>(
+export const phoenixConf = FileHelper.env(
   { base: sdk.volumes.main, subpath: 'phoenix.conf' },
   shape,
-  {
-    onRead: (raw) => shape.parse(raw),
-    // An unset key, or one `.catch()` repaired, is `undefined`, and the env
-    // serializer would write that as the literal string.
-    onWrite: (conf) =>
-      Object.fromEntries(
-        Object.entries(conf).filter(([, value]) => value !== undefined),
-      ),
-  },
 )

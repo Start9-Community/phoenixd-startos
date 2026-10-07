@@ -18,10 +18,6 @@ export const cli = '/phoenix/phoenix-cli'
 // which is where phoenixd's rustls looks for its trust roots.
 export const rootCaPath = '/usr/local/share/ca-certificates/startos-root-ca.crt'
 
-/** `sdk.getRootCa` in start-sdk 2.0.10; inline until this package is on it. */
-export const getRootCa = async (effects: T.Effects) =>
-  (await effects.getSslCertificate({ hostnames: [] })).at(-1)!
-
 export const indexers = {
   electrs: {
     packageId: 'electrs',

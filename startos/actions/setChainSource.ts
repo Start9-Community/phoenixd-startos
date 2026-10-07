@@ -8,7 +8,7 @@ const inputSpec = InputSpec.of({
   source: Value.union({
     name: i18n('Chain Source'),
     description: i18n(
-      'Where phoenixd watches the blockchain from. Whoever runs that server sees the addresses this wallet deposits to and withdraws from.',
+      'Where phoenixd watches the blockchain from. Whoever runs that server sees the addresses this wallet deposits to and withdraws from.\n- ACINQ’s public servers: ACINQ picks one for you, and nothing needs installing\n- Electrs on this server: your own indexer; install and sync Electrs first, and phoenixd then requires it to be running\n- Fulcrum on this server: your own indexer; install and sync Fulcrum first, and phoenixd then requires it to be running\n- Another Electrum server: a host:port you enter, which must serve TLS with a certificate this server trusts',
     ),
     warning: null,
     default: 'public',
