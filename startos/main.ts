@@ -1,5 +1,5 @@
 import { sdk } from './sdk'
-import { cli, getRootCa, mountpoint, port, rootCaPath } from './utils'
+import { cli, mountpoint, port, rootCaPath } from './utils'
 import { i18n } from './i18n'
 import { phoenixConf } from './fileModels/phoenix.conf'
 
@@ -39,7 +39,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
     ])
     .const(effects)
 
-  await subcontainer.writeFile(rootCaPath, await getRootCa(effects))
+  await subcontainer.writeFile(rootCaPath, await sdk.getRootCa(effects))
 
   return sdk.Daemons.of(effects)
     .addOneshot('trust-startos-ca', {
@@ -96,8 +96,6 @@ export const main = sdk.setupMain(async ({ effects }) => {
               message: i18n('Reaching the Electrum server'),
             }
 
-          // Params are stringified: setupI18n in 2.0.9 runs a number through
-          // Intl, which throws on the container's C.UTF-8 locale.
           return channels.length
             ? {
                 result: 'success',

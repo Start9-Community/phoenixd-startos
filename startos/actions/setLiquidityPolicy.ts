@@ -8,7 +8,7 @@ const inputSpec = InputSpec.of({
   'auto-liquidity': Value.select({
     name: i18n('Automatic Liquidity'),
     description: i18n(
-      'How much inbound liquidity phoenixd buys from ACINQ when a payment does not fit the current channel. Off rejects those payments instead of paying for room.',
+      'How much inbound liquidity phoenixd buys from ACINQ when a payment does not fit the current channel.\n- Off: payments that do not fit are rejected instead of paying for room\n- 2,000,000 sats: buys 2,000,000 sats of inbound liquidity each time\n- 5,000,000 sats: buys 5,000,000 sats of inbound liquidity each time\n- 10,000,000 sats: buys 10,000,000 sats of inbound liquidity each time',
     ),
     default: '2m',
     values: {
@@ -34,7 +34,7 @@ const inputSpec = InputSpec.of({
   'max-fee-credit': Value.select({
     name: i18n('Max Fee Credit'),
     description: i18n(
-      'How much ACINQ may hold as fee credit for payments too small to pay for a channel. Fee credit is non-refundable, and payments are rejected once the ceiling is reached.',
+      'How much ACINQ may hold as fee credit for payments too small to pay for a channel. Fee credit is non-refundable, and payments are rejected once the ceiling is reached.\n- Off: no fee credit is held, so those payments are rejected\n- 50,000 sats: up to 50,000 sats of fee credit\n- 125,000 sats: up to 125,000 sats of fee credit\n- 250,000 sats: up to 250,000 sats of fee credit',
     ),
     default: '50k',
     values: {

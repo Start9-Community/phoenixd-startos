@@ -92,7 +92,7 @@ One, and only when the user asks for it.
 | `electrs`  | `running` | `store.json` `chainSource` is it | `electrs`, `sync`          |
 | `fulcrum`  | `running` | `store.json` `chainSource` is it | `primary`, `sync-progress` |
 
-`setupDependencies` reads the selection and declares only the one chosen, so the default install declares nothing.
+`startos/dependencies.ts` declares both as optional, each enabled only while `chainSource` names it, so the default install requires neither.
 
 **There is still no Bitcoin node in the picture for phoenixd itself.** Channels are opened and managed by ACINQ's Lightning service provider, a third party trusted for liquidity and channel management, and no indexer changes that. An indexer only replaces the public Electrum server phoenixd would otherwise watch the chain through.
 
@@ -187,7 +187,7 @@ A restored instance comes back with the same node identity, the same channels, a
 ## Limitations and Differences
 
 1. **The wallet depends on ACINQ's service provider** for channels and liquidity. This is not a self-contained Lightning node, the provider is compiled into phoenixd rather than configured, and no setting here changes it.
-2. **A Lightning payment too small to pay for a channel becomes fee credit ACINQ holds**, which is non-refundable. Set Liquidity Policy caps how much accrues; it cannot switch the behavior off.
+2. **A Lightning payment too small to pay for a channel becomes fee credit ACINQ holds**, which is non-refundable. Set Liquidity Policy caps how much accrues; setting it to Off rejects those payments instead.
 3. **The seed is only in the volume.** No action surfaces it; you read it from the service's terminal.
 4. **An Electrum server must serve TLS with a certificate this container trusts.** phoenixd offers no plaintext or self-signed option. An indexer on this server qualifies because the package installs this server's root CA; an address typed into Set Chain Source has to be publicly trusted, or chain to that same root.
 5. **No web interface.**

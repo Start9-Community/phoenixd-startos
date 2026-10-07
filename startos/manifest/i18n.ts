@@ -21,3 +21,29 @@ export default {
     },
   },
 }
+
+export const electrsDescription = {
+  en_US:
+    'phoenixd watches the blockchain through it while Set Chain Source is set to Electrs on this server',
+  es_ES:
+    'phoenixd observa la cadena de bloques a través de él mientras Establecer la fuente de la cadena esté en Electrs en este servidor',
+  de_DE:
+    'phoenixd beobachtet die Blockchain darüber, solange bei Chain-Quelle setzen Electrs auf diesem Server gewählt ist',
+  pl_PL:
+    'phoenixd obserwuje przez niego łańcuch bloków, gdy w Ustaw źródło łańcucha wybrano Electrs na tym serwerze',
+  fr_FR:
+    'phoenixd observe la chaîne de blocs par son intermédiaire tant que Définir la source de la chaîne est réglé sur Electrs sur ce serveur',
+}
+
+export const fulcrumDescription = {
+  en_US:
+    'phoenixd watches the blockchain through it while Set Chain Source is set to Fulcrum on this server',
+  es_ES:
+    'phoenixd observa la cadena de bloques a través de él mientras Establecer la fuente de la cadena esté en Fulcrum en este servidor',
+  de_DE:
+    'phoenixd beobachtet die Blockchain darüber, solange bei Chain-Quelle setzen Fulcrum auf diesem Server gewählt ist',
+  pl_PL:
+    'phoenixd obserwuje przez niego łańcuch bloków, gdy w Ustaw źródło łańcucha wybrano Fulcrum na tym serwerze',
+  fr_FR:
+    'phoenixd observe la chaîne de blocs par son intermédiaire tant que Définir la source de la chaîne est réglé sur Fulcrum sur ce serveur',
+}

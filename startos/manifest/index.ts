@@ -15,7 +15,7 @@ export const manifest = setupManifest({
     phoenixd: {
       source: { dockerTag: 'acinq/phoenixd:0.9.0' },
       arch: ['x86_64', 'aarch64'],
+      emulateMissing: false,
     },
   },
-  dependencies: {},
 })
