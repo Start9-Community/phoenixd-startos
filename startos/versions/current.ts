@@ -1,15 +1,17 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.9.2:1',
+  version: '0.9.2:2',
   releaseNotes: {
-    en_US: 'Updated the StartOS SDK to 3.0.6. No change in behavior.',
+    en_US:
+      'Stops trusting certificates from a compromised certificate authority (eMudhra).',
     es_ES:
-      'Actualizado el SDK de StartOS a 3.0.6. Sin cambios de comportamiento.',
-    de_DE: 'StartOS-SDK auf 3.0.6 aktualisiert. Keine Verhaltensänderung.',
-    pl_PL: 'Zaktualizowano SDK StartOS do 3.0.6. Bez zmian w działaniu.',
-    fr_FR:
-      'Mise à jour du SDK StartOS vers 3.0.6. Aucun changement de comportement.',
+      'Deja de confiar en los certificados de una autoridad de certificación comprometida (eMudhra).',
+    de_DE:
+      'Vertraut Zertifikaten einer kompromittierten Zertifizierungsstelle (eMudhra) nicht mehr.',
+    pl_PL:
+      'Przestaje ufać certyfikatom przejętego urzędu certyfikacji (eMudhra).',
+    fr_FR: `Ne fait plus confiance aux certificats d'une autorité de certification compromise (eMudhra).`,
   },
   migrations: {
     up: async ({ effects }) => {},
