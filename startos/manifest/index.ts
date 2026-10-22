@@ -13,7 +13,7 @@ export const manifest = setupManifest({
   volumes: ['main', 'startos'],
   images: {
     phoenixd: {
-      source: { dockerTag: 'acinq/phoenixd:0.9.2' },
+      source: { dockerBuild: { buildArgs: { IMAGE: 'acinq/phoenixd:0.9.2' } } },
       arch: ['x86_64', 'aarch64'],
       emulateMissing: false,
     },

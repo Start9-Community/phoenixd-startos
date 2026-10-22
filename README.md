@@ -35,11 +35,11 @@
 
 ## Image and Container Runtime
 
-One upstream image, consumed unmodified.
+One upstream image, with its CA store upgraded by the root `Dockerfile`, a temporary layer that comes out once upstream ships an image built on a fixed store.
 
 | Property      | Value                      |
 | ------------- | -------------------------- |
-| Image         | `acinq/phoenixd`           |
+| Image         | `acinq/phoenixd` + root `Dockerfile` |
 | Architectures | x86_64, aarch64            |
 | Command       | The image's own entrypoint |
 
@@ -201,7 +201,7 @@ A restored instance comes back with the same node identity, the same channels, a
 
 ```yaml
 package_id: phoenixd
-image: acinq/phoenixd
+image: acinq/phoenixd + root Dockerfile (CA store upgrade)
 architectures:
   - x86_64
   - aarch64
