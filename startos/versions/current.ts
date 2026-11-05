@@ -1,17 +1,18 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.9.2:2',
+  version: '0.9.2:3',
   releaseNotes: {
     en_US:
-      'Stops trusting certificates from a compromised certificate authority (eMudhra).',
+      'Requires StartOS 0.4.1 or later. Fixes memory use growing while the service runs.',
     es_ES:
-      'Deja de confiar en los certificados de una autoridad de certificación comprometida (eMudhra).',
+      'Requiere StartOS 0.4.1 o posterior. Corrige el aumento del uso de memoria mientras el servicio está en ejecución.',
     de_DE:
-      'Vertraut Zertifikaten einer kompromittierten Zertifizierungsstelle (eMudhra) nicht mehr.',
+      'Erfordert StartOS 0.4.1 oder neuer. Behebt einen während der Laufzeit des Dienstes ansteigenden Speicherverbrauch.',
     pl_PL:
-      'Przestaje ufać certyfikatom przejętego urzędu certyfikacji (eMudhra).',
-    fr_FR: `Ne fait plus confiance aux certificats d'une autorité de certification compromise (eMudhra).`,
+      'Wymaga StartOS 0.4.1 lub nowszego. Naprawia wzrost zużycia pamięci podczas działania usługi.',
+    fr_FR:
+      "Nécessite StartOS 0.4.1 ou une version ultérieure. Corrige l'augmentation de la consommation de mémoire pendant le fonctionnement du service.",
   },
   migrations: {
     up: async ({ effects }) => {},
