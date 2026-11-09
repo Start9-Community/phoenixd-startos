@@ -10,7 +10,7 @@ export const manifest = setupManifest({
   marketingUrl: 'https://phoenix.acinq.co/server/',
   donationUrl: null,
   description: i18n.description,
-  volumes: ['main', 'startos'],
+  volumes: ['main', 'startos', 'public'],
   images: {
     phoenixd: {
       source: { dockerBuild: { buildArgs: { IMAGE: 'acinq/phoenixd:0.9.2' } } },

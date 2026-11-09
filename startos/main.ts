@@ -1,5 +1,7 @@
+import { mkdir, rename, writeFile } from 'fs/promises'
+import { dirname } from 'path'
 import { sdk } from './sdk'
-import { cli, mountpoint, port, rootCaPath } from './utils'
+import { cli, httpPasswordFile, mountpoint, port, rootCaPath } from './utils'
 import { i18n } from './i18n'
 import { phoenixConf } from './fileModels/phoenix.conf'
 
@@ -29,7 +31,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
   )
 
   // phoenixd reads phoenix.conf once, at startup; these restart it on an edit.
-  await phoenixConf
+  const watched = await phoenixConf
     .read((c) => [
       c['http-password'],
       c['electrum-server'],
@@ -38,6 +40,13 @@ export const main = sdk.setupMain(async ({ effects }) => {
       c['max-fee-credit'],
     ])
     .const(effects)
+
+  const httpPassword = watched?.[0]
+  if (httpPassword) {
+    await mkdir(dirname(httpPasswordFile), { recursive: true })
+    await writeFile(`${httpPasswordFile}.tmp`, httpPassword)
+    await rename(`${httpPasswordFile}.tmp`, httpPasswordFile)
+  }
 
   await subcontainer.writeFile(rootCaPath, await sdk.getRootCa(effects))
 
