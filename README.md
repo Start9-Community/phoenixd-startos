@@ -59,7 +59,7 @@ Three volumes, one of which is a wallet.
 | `startos` | _unmounted_         | `store.json`; no subcontainer sees it |
 | `public`  | _unmounted_         | `full/http-password`, for dependents  |
 
-**Dependents mount `public/full`, never `main`**, which holds `seed.dat`. `main` writes `phoenix.conf`'s `http-password` there on every start, and restarts when it changes, so a new password reaches dependents when they next start.
+**Dependents should mount `public/full`, never `main`**, which holds `seed.dat`. `main` writes `phoenix.conf`'s `http-password` there on every start, and restarts when it changes, so a new password reaches dependents when they next start. Existing dependents that mount `main` retain access to the seed; this export does not restrict those mounts.
 
 | Path           | Written by           | Holds                                         |
 | -------------- | -------------------- | --------------------------------------------- |
