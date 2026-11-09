@@ -51,12 +51,15 @@ Two oneshots run first: one gives the data directory to the unprivileged user th
 
 ## Volume and Data Layout
 
-Two volumes, one of which is a wallet.
+Three volumes, one of which is a wallet.
 
 | Volume    | Mount Point         | Purpose                               |
 | --------- | ------------------- | ------------------------------------- |
 | `main`    | `/phoenix/.phoenix` | The seed, the channels, the config    |
 | `startos` | _unmounted_         | `store.json`; no subcontainer sees it |
+| `public`  | _unmounted_         | `full/http-password`, for dependents  |
+
+**Dependents mount `public/full`, never `main`**, which holds `seed.dat`. `main` writes `phoenix.conf`'s `http-password` there on every start, and restarts when it changes, so a new password reaches dependents when they next start.
 
 | Path           | Written by           | Holds                                         |
 | -------------- | -------------------- | --------------------------------------------- |
@@ -213,6 +216,7 @@ oneshots:
 volumes:
   main: /phoenix/.phoenix # seed.dat, phoenix.conf (holds the API password), channel db
   startos: null # store.json; mounted nowhere
+  public: null # full/http-password for dependents; mounted nowhere, not backed up
 file_models:
   - phoenix.conf # env; API password, electrum-server, liquidity caps
   - store.json # apiPasswordSet, chainSource, customElectrumServer

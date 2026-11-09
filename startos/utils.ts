@@ -10,6 +10,10 @@ import {
 import { sdk } from './sdk'
 import { storeJson } from './fileModels/store.json'
 
+/** Host path of the HTTP password dependents mount as `public/full`. */
+export const httpPasswordFile =
+  '/media/startos/volumes/public/full/http-password'
+
 export const port = 9740
 export const mountpoint = '/phoenix/.phoenix'
 export const cli = '/phoenix/phoenix-cli'
